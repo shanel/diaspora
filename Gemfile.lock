@@ -229,6 +229,11 @@ GEM
       builder
       excon (~> 0.49)
       formatador (~> 0.2)
+    fog-google (0.5.2)
+      fog-core
+      fog-json
+      fog-xml
+      google-api-client (~> 0.8.7)
     fog-json (1.0.2)
       fog-core (~> 1.0)
       multi_json (~> 1.10)
