@@ -1,4 +1,4 @@
-if AppConfig.environment.assets.upload? && AppConfig.environment.s3.enable?
+if AppConfig.environment.assets.upload? && (AppConfig.environment.s3.enable? || AppConfig.environment.gcloud.enable?)
   # Monkey patch to make Rails.root available early
   require 'pathname'
   module Rails

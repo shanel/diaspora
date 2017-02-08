@@ -124,6 +124,23 @@ configuration: ## Section
       ## one year).
       #cache : true
 
+    ## Use Google Cloud Storage instead of your local filesystem
+    ## to handle uploaded pictures (disabled by default).
+    gcloud: ## Section
+
+      #enable: true
+      #key: 'change_me'
+      #secret: 'change_me'
+      #bucket: 'my_photos'
+      #region: 'us-east-1'
+
+      ## Use max-age header on Google Cloud Storage resources (default=true).
+      ## When true, this allows locally cached images to be served for up to
+      ## one year. This can improve load speed and save requests to the image
+      ## host. Set to false to revert to browser defaults (usually less than
+      ## one year).
+      #cache : true
+
     ## Set redirect URL for an external image host (Amazon S3 or other).
     ## If hosting images for your pod on an external server (even your own),
     ## add its URL here. All requests made to images under /uploads/images

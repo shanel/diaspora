@@ -30,6 +30,33 @@ namespace :migrations do
     }
   end
 
+  task :upload_photos_to_gcloud do
+    require File.join(File.dirname(__FILE__), '..', '..', 'config', 'environment')
+    puts AppConfig.environment.gcloud.key
+
+    connection = Aws::S3.new( AppConfig.environment.s3.key, AppConfig.environment.s3.secret)
+    bucket = connection.bucket(AppConfig.environment.s3.bucket)
+    dir_name = File.dirname(__FILE__) + "/../../public/uploads/images/"
+
+    count = Dir.foreach(dir_name).count
+    current = 0
+
+    Dir.foreach(dir_name){|file_name| puts file_name;
+      if file_name != '.' && file_name != '..';
+        begin
+          key = Aws::S3::Key.create(bucket, 'uploads/images/' + file_name);
+          key.put(File.open(dir_name+ '/' + file_name).read, 'public-read');
+          key.public_link();
+          puts "Uploaded #{current} of #{count}"
+          current += 1
+        rescue => e
+          puts "error #{e} on #{current} (#{file_name}), retrying"
+          retry
+        end
+      end
+    }
+  end
+
   CURRENT_QUEUES = %w(urgent high medium low default).freeze
 
   desc "Migrate sidekiq jobs, retries, scheduled and dead jobs from any legacy queue to "\
